@@ -1,92 +1,123 @@
-namespace LocatorApp.Pages;
-
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Maui.Controls.Maps;
-using Microsoft.Maui.Maps;
-using Xamarin.Essentials;
-
-
-public partial class MapPage : ContentPage
+namespace LocatorApp.Pages
 {
-    private MapSpan mapSpan;
-    private CancellationTokenSource _cancelTokenSource;
-    private bool _isCheckingLocation;
-    private GeolocationRequest request;
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Microsoft.Maui.Controls.Maps;
+    using Microsoft.Maui.Maps;
+    using Xamarin.Essentials;
+    using Microsoft.Maui.Controls;
 
-    
-    public MapPage(MapSpan mapSpan)
+    public partial class MapPage : ContentPage
     {
-        
-        _cancelTokenSource = new CancellationTokenSource();
-        request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
-        this.mapSpan = mapSpan;
-    }
+        private MapSpan mapSpan;
+        private CancellationTokenSource _cancelTokenSource;
+        private bool _isCheckingLocation;
+        private GeolocationRequest request;
+        private Microsoft.Maui.Controls.Maps.Map myMap;
 
-    public async Task Main(View content)
-    {
-        try
+        public MapPage()
         {
-            _isCheckingLocation = true;
-
-            // Ensure we have the required permissions
-            var status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
-            if (status != PermissionStatus.Granted)
+            InitializeComponent();
+            _cancelTokenSource = new CancellationTokenSource();
+            request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
+            myMap = new Microsoft.Maui.Controls.Maps.Map
             {
-                status = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+                IsShowingUser = true
+            };
+            Content = myMap; // Initialize map as the Content
+        }
+
+        public MapPage(MapSpan mapSpan) : this()
+        {
+            this.mapSpan = mapSpan;
+        }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            await MainAsync();
+        }
+
+        [Obsolete]
+        public async Task MainAsync()
+        {
+            try
+            {
+                _isCheckingLocation = true;
+
+                // Ensure we have the required permissions
+                var status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
                 if (status != PermissionStatus.Granted)
                 {
-                    // Permission denied, handle accordingly
-                    return;
+                    status = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+                    if (status != PermissionStatus.Granted)
+                    {
+                        // Permission denied, handle accordingly
+                        return;
+                    }
+                }
+
+                Location location = await Geolocation.GetLocationAsync(request, _cancelTokenSource.Token);
+
+                if (location != null)
+                {
+                    var mapLocation = ConvertToMauiLocation(location);
+                    mapSpan = new MapSpan(mapLocation, 0.01, 0.01);
+
+                    // Update the map with the user's current location
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        myMap.MoveToRegion(mapSpan);
+                        myMap.IsShowingUser = true;
+                        
+                    });
+                }
+                else
+                {
+                    Console.WriteLine("Unable to get location.");
                 }
             }
-
-            Location location = await Geolocation.GetLocationAsync(request, _cancelTokenSource.Token);
-
-            if (location != null)
+            catch (FeatureNotSupportedException ex)
             {
-                var mapLocation = ConvertToMauiLocation(location);
-                mapSpan = new MapSpan(mapLocation, 0.01, 0.01);
-                var map = new Microsoft.Maui.Controls.Maps.Map(mapSpan);
-                Content = map;
+                // Handle not supported on device exception
+                Console.WriteLine($"Feature not supported: {ex.Message}");
+            }
+            catch (FeatureNotEnabledException ex)
+            {
+                // Handle not enabled on device exception
+                Console.WriteLine($"Feature not enabled: {ex.Message}");
+            }
+            catch (PermissionException ex)
+            {
+                // Handle permission exception
+                Console.WriteLine($"Permission denied: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                // Unable to get location
+                Console.WriteLine($"Unable to get location: {ex.Message}");
+            }
+            finally
+            {
+                _isCheckingLocation = false;
             }
         }
-        catch (FeatureNotSupportedException)
-        {
-            // Handle not supported on device exception
-        }
-        catch (FeatureNotEnabledException)
-        {
-            // Handle not enabled on device exception
-        }
-        catch (PermissionException)
-        {
-            // Handle permission exception
-        }
-        catch (Exception)
-        {
-            // Unable to get location
-        }
-        finally
-        {
-            _isCheckingLocation = false;
-        }
-    }
 
-    public static implicit operator View(MapPage v)
-    {
-        throw new NotImplementedException();
-    }
+        public static implicit operator View(MapPage v)
+        {
+            throw new NotImplementedException();
+        }
 
-    public void CancelRequest()
-    {
-        if (_isCheckingLocation && _cancelTokenSource != null && !_cancelTokenSource.IsCancellationRequested)
-            _cancelTokenSource.Cancel();
-    }
+        public void CancelRequest()
+        {
+            if (_isCheckingLocation && _cancelTokenSource != null && !_cancelTokenSource.IsCancellationRequested)
+                _cancelTokenSource.Cancel();
+        }
 
-    public static Microsoft.Maui.Devices.Sensors.Location ConvertToMauiLocation(Location xamarinLocation)
-    {
-        return new Microsoft.Maui.Devices.Sensors.Location(xamarinLocation.Latitude, xamarinLocation.Longitude);
+        public static Microsoft.Maui.Devices.Sensors.Location ConvertToMauiLocation(Location xamarinLocation)
+        {
+            return new Microsoft.Maui.Devices.Sensors.Location(xamarinLocation.Latitude, xamarinLocation.Longitude);
+        }
     }
 }
