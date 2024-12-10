@@ -69,8 +69,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Pages\Map.xaml.cs">
-	    <DependentUpon>Map.xaml</DependentUpon>
+	  <Compile Update="Pages\MapPage.xaml.cs">
+	    <DependentUpon>MapPage.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Pages\Devices.xaml.cs">
 	    <DependentUpon>Devices.xaml</DependentUpon>
@@ -78,7 +78,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Pages\Map.xaml">
+	  <MauiXaml Update="Pages\MapPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Devices.xaml">

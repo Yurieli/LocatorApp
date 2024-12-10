@@ -15,26 +15,13 @@ public partial class MapPage : ContentPage
     private bool _isCheckingLocation;
     private GeolocationRequest request;
 
-    public MapPage()
-    {
-        InitializeComponent();
-        _cancelTokenSource = new CancellationTokenSource();
-        request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
-    }
-
-    private void InitializeComponent()
-    {
-        throw new NotImplementedException();
-    }
-
+    
     public MapPage(MapSpan mapSpan)
     {
+        
+        _cancelTokenSource = new CancellationTokenSource();
+        request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
         this.mapSpan = mapSpan;
-    }
-
-    public View GetContent()
-    {
-        return Content;
     }
 
     public async Task Main(View content)
@@ -62,7 +49,7 @@ public partial class MapPage : ContentPage
                 var mapLocation = ConvertToMauiLocation(location);
                 mapSpan = new MapSpan(mapLocation, 0.01, 0.01);
                 var map = new Microsoft.Maui.Controls.Maps.Map(mapSpan);
-                content = map;
+                Content = map;
             }
         }
         catch (FeatureNotSupportedException)
@@ -100,6 +87,6 @@ public partial class MapPage : ContentPage
 
     public static Microsoft.Maui.Devices.Sensors.Location ConvertToMauiLocation(Location xamarinLocation)
     {
-        if (xamarinLocation == null) return null; return new Microsoft.Maui.Devices.Sensors.Location(xamarinLocation.Latitude, xamarinLocation.Longitude);
+        return new Microsoft.Maui.Devices.Sensors.Location(xamarinLocation.Latitude, xamarinLocation.Longitude);
     }
 }
