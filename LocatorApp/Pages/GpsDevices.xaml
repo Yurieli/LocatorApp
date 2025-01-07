@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="LocatorApp.Pages.GpsDevices"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:LocatorApp.Classes"
+    Title="Devices">
+
+    <ContentPage.BindingContext>
+        <local:GpsDeviceList />
+    </ContentPage.BindingContext>
+
+    <ScrollView>
+        <StackLayout>
+            <CollectionView
+                ItemsSource="{Binding GpsDev}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout
+                            Padding="2"
+                            Orientation="Horizontal">
+                            <Button
+                                FontSize="Medium"
+                                Text="{Binding CombinedText}" />
+                            <StackLayout
+                                x:Name="devInfo"
+                                IsVisible="False">
+                                <Border
+                                    Background="Bisque">
+                                    <Label
+                                        Text="{Binding CombinedText}" />
+                                </Border>
+                            </StackLayout>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Button
+                Clicked="AddDevSetVisible"
+                Text="Add Device" />
+
+            <StackLayout
+                x:Name="popUpAddDev"
+                IsVisible="False"
+                Orientation="Vertical"
+                VerticalOptions="Start">
+                <Border Background="Bisque">
+                    <StackLayout>
+                        <Entry
+                            x:Name="inputName"
+                            Placeholder="Device Name"
+                            TextColor="Black" />
+                        <Entry
+                            x:Name="inputID"
+                            Placeholder="Device ID"
+                            TextColor="Black" />
+
+                        <Button
+                            Padding="10"
+                            Clicked="Submit"
+                            Text="Add" />
+                        <Button
+                            Padding="10"
+                            Clicked="CloseAddDev"
+                            Text="Close" />
+                    </StackLayout>
+
+                </Border>
+            </StackLayout>
+
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

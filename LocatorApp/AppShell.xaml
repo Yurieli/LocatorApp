@@ -13,7 +13,7 @@
         <ShellContent ContentTemplate="{DataTemplate local:MapPage}"/>
     </FlyoutItem>
     <FlyoutItem Title="Devices">
-        <ShellContent ContentTemplate="{DataTemplate local:Devices}"/>
+        <ShellContent ContentTemplate="{DataTemplate local:GpsDevices}"/>
     </FlyoutItem>
     
 </Shell>
