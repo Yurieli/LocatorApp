@@ -28,8 +28,7 @@
 
         public async void DevInfoSetVisible(object sender, EventArgs e)
         {
-            devInfo.IsVisible = true;
-            await devInfo.TranslateTo(0,1,1500, Easing.SinOut);
+            
         }
 
         public void Submit(object sender, EventArgs e)
@@ -52,8 +51,12 @@
             popUpAddDev.IsVisible = false;
         }
 
-        private void Button_Clicked(object sender, EventArgs e)
+        private async void Button_Clicked(object sender, EventArgs e)
         {
+            var button = sender as Button;
+            var id = button.CommandParameter as string;
+            await Navigation.PushAsync(new MapPage(_gpsDeviceList.getGpsDevice(id)));
+
 
         }
     }

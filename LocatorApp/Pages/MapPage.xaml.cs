@@ -7,6 +7,7 @@ namespace LocatorApp.Pages
     using Microsoft.Maui.Maps;
     using Xamarin.Essentials;
     using Microsoft.Maui.Controls;
+    using LocatorApp.Classes;
 
     public partial class MapPage : ContentPage
     {
@@ -23,9 +24,23 @@ namespace LocatorApp.Pages
             request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
             myMap = new Microsoft.Maui.Controls.Maps.Map
             {
+
                 IsShowingUser = true
             };
             Content = myMap; // Initialize map as the Content
+        }
+        public MapPage(GpsDevice gpsDevice)
+        {
+            InitializeComponent();
+            _cancelTokenSource = new CancellationTokenSource();
+            request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
+            myMap = new Microsoft.Maui.Controls.Maps.Map
+            {
+                
+                IsShowingUser = true
+            };
+            Content = myMap; // Initialize map as the Content
+            ShowDevice(gpsDevice);
         }
 
         public MapPage(MapSpan mapSpan) : this()
@@ -59,9 +74,10 @@ namespace LocatorApp.Pages
                 }
 
                 Location location = await Geolocation.GetLocationAsync(request, _cancelTokenSource.Token);
-
+                
                 if (location != null)
                 {
+                   
                     var mapLocation = ConvertToMauiLocation(location);
                     mapSpan = new MapSpan(mapLocation, 0.01, 0.01);
 
@@ -119,5 +135,24 @@ namespace LocatorApp.Pages
         {
             return new Microsoft.Maui.Devices.Sensors.Location(xamarinLocation.Latitude, xamarinLocation.Longitude);
         }
+
+        public void ShowDevice(GpsDevice gpsdevice)
+        {
+            Location gpsLocation = new Location(gpsdevice.GpsLatitude, gpsdevice.GpsLongitude);
+
+            var mauiLocation = ConvertToMauiLocation(gpsLocation);
+            
+            
+            Pin pin = new Pin
+            {
+                Label = "Device",
+                Type = PinType.Generic,
+                Location = mauiLocation
+            };
+           myMap.Pins.Add(pin);
+
+        }
+
+        
     }
 }

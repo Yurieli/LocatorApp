@@ -12,9 +12,16 @@ namespace LocatorApp.Classes
         }
         public void GpsSubmit(string name, string id)
         {
-            GpsDevice gpsDevice = new GpsDevice(name, id);
+            GpsDevice gpsDevice = new GpsDevice(name, id, 48.73350406686496, 21.24905573164951);
 
             GpsDev.Add(gpsDevice);
         }
+
+        public GpsDevice getGpsDevice(string id)
+        {
+            return GpsDev.FirstOrDefault(gpsDevice => gpsDevice.Id == id);
+        }
     }
 }
+
+//48.73350406686496, 21.24905573164951

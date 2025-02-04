@@ -6,38 +6,32 @@
     xmlns:local="clr-namespace:LocatorApp.Classes"
     Title="Devices">
 
+
     <ContentPage.BindingContext>
         <local:GpsDeviceList />
     </ContentPage.BindingContext>
 
     <ScrollView>
         <StackLayout>
-            <CollectionView
-                ItemsSource="{Binding GpsDev}">
+            <CollectionView ItemsSource="{Binding GpsDev}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <StackLayout
-                            Padding="2"
-                            Orientation="Horizontal">
+                        <StackLayout Padding="2" Orientation="Horizontal">
                             <Button
+                                Clicked="Button_Clicked"
+                                CommandParameter="{Binding Id}"
                                 FontSize="Medium"
                                 Text="{Binding CombinedText}" />
-                            <StackLayout
-                                x:Name="devInfo"
-                                IsVisible="False">
-                                <Border
-                                    Background="Bisque">
-                                    <Label
-                                        Text="{Binding CombinedText}" />
-                                </Border>
+                            <StackLayout x:Name="deviceInfo" IsVisible="False">
+                                <Button Clicked="Button_Clicked" Text="FIND" />
+                                <Button Clicked="Delete_device" Text="DELETE" />
+
                             </StackLayout>
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-            <Button
-                Clicked="AddDevSetVisible"
-                Text="Add Device" />
+            <Button Clicked="AddDevSetVisible" Text="Add Device" />
 
             <StackLayout
                 x:Name="popUpAddDev"
