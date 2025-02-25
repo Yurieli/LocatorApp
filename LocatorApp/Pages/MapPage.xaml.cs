@@ -145,7 +145,7 @@ namespace LocatorApp.Pages
             
             Pin pin = new Pin
             {
-                Label = "Device",
+                Label = gpsdevice.Name,
                 Type = PinType.Generic,
                 Location = mauiLocation
             };

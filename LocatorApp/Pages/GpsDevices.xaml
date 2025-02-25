@@ -12,19 +12,26 @@
     </ContentPage.BindingContext>
 
     <ScrollView>
-        <StackLayout>
+        <StackLayout x:Name="DevicesLayout">
             <CollectionView ItemsSource="{Binding GpsDev}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Padding="2" Orientation="Horizontal">
                             <Button
-                                Clicked="Button_Clicked"
-                                CommandParameter="{Binding Id}"
+                                Clicked="ToggleVisibility"
+                                CommandParameter="{Binding}"
                                 FontSize="Medium"
                                 Text="{Binding CombinedText}" />
-                            <StackLayout x:Name="deviceInfo" IsVisible="False">
-                                <Button Clicked="Button_Clicked" Text="FIND" />
-                                <Button Clicked="Delete_device" Text="DELETE" />
+                            <StackLayout Background="Azure" IsVisible="{Binding IsVisible}">
+                                <Button
+                                    Clicked="Button_Clicked"
+                                    CommandParameter="{Binding Id}"
+                                    Text="FIND" />
+                                <Button
+                                    Clicked="DeleteDevice"
+                                    CommandParameter="{Binding Id}"
+                                    Text="DELETE" />
+
 
                             </StackLayout>
                         </StackLayout>
@@ -48,7 +55,6 @@
                             x:Name="inputID"
                             Placeholder="Device ID"
                             TextColor="Black" />
-
                         <Button
                             Padding="10"
                             Clicked="Submit"

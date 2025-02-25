@@ -4,7 +4,7 @@
     using System.Collections.ObjectModel;
     using Microsoft.Maui.Controls;
     using LocatorApp.Classes;
-    
+
 
     public partial class GpsDevices : ContentPage
     {
@@ -26,10 +26,6 @@
             await popUpAddDev.TranslateTo(0, 1, 1500, Easing.SinIn);
         }
 
-        public async void DevInfoSetVisible(object sender, EventArgs e)
-        {
-            
-        }
 
         public void Submit(object sender, EventArgs e)
         {
@@ -42,13 +38,28 @@
                 inputID.Text = string.Empty;
                 inputName.Text = string.Empty;
 
+                popUpAddDev.Unfocus();
                 popUpAddDev.IsVisible = false;
+                HideKeyboard();
+                
             }
+            
         }
+
 
         public void CloseAddDev(object sender, EventArgs e)
         {
+            inputName.Text = string.Empty;
+            inputID.Text= string.Empty;
             popUpAddDev.IsVisible = false;
+        }
+
+        private void ToggleVisibility(object sender, EventArgs e)
+        {
+            if (sender is Button button && button.CommandParameter is GpsDevice device)
+            {
+                device.IsVisible = !device.IsVisible;
+            }
         }
 
         private async void Button_Clicked(object sender, EventArgs e)
@@ -58,6 +69,30 @@
             await Navigation.PushAsync(new MapPage(_gpsDeviceList.getGpsDevice(id)));
 
 
+        }
+
+        private async void DeleteDevice(object sender, EventArgs e)
+        {
+            var button = sender as Button;
+            var id = button.CommandParameter as string;
+            var device = _gpsDeviceList.GpsDev.FirstOrDefault(x => x.Id == id);
+            _gpsDeviceList.GpsDev.Remove(device);
+        }
+
+
+        private void HideKeyboard()
+        {
+            if (inputName != null)
+            {
+                inputName.IsEnabled = false;  // Temporarily disable the Entry
+                inputName.IsEnabled = true;   // Re-enable the Entry (forces keyboard close)
+            }
+
+            if (inputID != null)
+            {
+                inputID.IsEnabled = false;
+                inputID.IsEnabled = true;
+            }
         }
     }
 }
