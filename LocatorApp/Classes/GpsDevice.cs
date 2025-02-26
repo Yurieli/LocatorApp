@@ -1,12 +1,14 @@
 ﻿using System.ComponentModel;
 using System.Text.Json.Serialization;
 using System.Data.SqlClient;
+using SQLite;
 
 namespace LocatorApp.Classes
 {
     public class GpsDevice : INotifyPropertyChanged
     {
         [JsonPropertyName("id")]
+        [PrimaryKey,AutoIncrement]
         public string Id { get; set; }
         [JsonPropertyName("name")]
         public string Name { get; set; }
@@ -39,6 +41,8 @@ namespace LocatorApp.Classes
 
 
         public string CombinedText => $"NAME: {Name}    ID: {Id}";
+
+        public GpsDevice() { }
         public GpsDevice(string name, string id, double gpsLatitude, double gpsLongtitude)
         {
             Name = name;

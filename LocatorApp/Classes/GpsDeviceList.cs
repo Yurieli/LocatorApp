@@ -8,12 +8,25 @@ namespace LocatorApp.Classes
     public class GpsDeviceList
     {
         public ObservableCollection<GpsDevice> GpsDev { get; set; }
+        private readonly DatabaseHelper _dbHelper;
         
         public GpsDeviceList()
         {
             GpsDev = new ObservableCollection<GpsDevice>();
-            LoadDevices();
+            _dbHelper = new DatabaseHelper();
+            
 
+        }
+
+        public async Task LoadDeviceAsync()
+        {
+            var devices = await _dbHelper.GetDevicesAsync();
+            GpsDev.Clear();
+
+            foreach (var device in devices)
+            {
+                GpsDev.Add(device);
+            } 
         }
         public void GpsSubmit(string name, string id)
         {
@@ -27,29 +40,7 @@ namespace LocatorApp.Classes
             return GpsDev.FirstOrDefault(gpsDevice => gpsDevice.Id == id);
         }
 
-        public void SaveDevices()
-        {
-            string json = JsonSerializer.Serialize(GpsDev);
-            Preferences.Set("SavedDevices", json);
-        }
 
-        public void LoadDevices()
-        {
-            if (Preferences.ContainsKey("SavedDevices"))
-            {
-                string json = Preferences.Get("SavedDevices", string.Empty);
-                var devices = JsonSerializer.Deserialize<ObservableCollection<GpsDevice>>(json);
-
-                if (devices != null)
-                {
-                    GpsDev.Clear();
-                    foreach (var device in devices)
-                    {
-                        GpsDev.Add(device);
-                    }
-                }
-            }
-        }
 
 
     }

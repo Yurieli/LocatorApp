@@ -75,6 +75,7 @@
 		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="9.0.10" />
 		<PackageReference Include="Microsoft.Maui.Essentials" Version="9.0.14" />
 		<PackageReference Include="Microsoft.Maui.Maps" Version="9.0.10" />
+		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
 		<PackageReference Include="System.Data.Common" Version="4.3.0" />
 		<PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
 		<PackageReference Include="Xamarin.Essentials" Version="1.6.0" />
