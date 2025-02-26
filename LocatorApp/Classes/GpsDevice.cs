@@ -7,18 +7,17 @@ namespace LocatorApp.Classes
 {
     public class GpsDevice : INotifyPropertyChanged
     {
-        [JsonPropertyName("id")]
         [PrimaryKey,AutoIncrement]
         public string Id { get; set; }
-        [JsonPropertyName("name")]
+        
         public string Name { get; set; }
-        [JsonPropertyName("gpsLatitude")]
+       
         public double GpsLatitude { get; set; } //sirka
-        [JsonPropertyName("gpsLongtitude")]
+        
         public double GpsLongitude { get; set; } //dlzka;
 
         private bool _isVisible;
-        [JsonPropertyName("isVisible")]
+        
         public bool IsVisible
         {
             get => _isVisible;

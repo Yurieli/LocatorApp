@@ -14,10 +14,14 @@
         public GpsDevices()
         {
             InitializeComponent();
-
             _gpsDeviceList = new GpsDeviceList();
-
             BindingContext = _gpsDeviceList;
+        }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            await _gpsDeviceList.LoadDevicesAsync();
         }
 
         public async void AddDevSetVisible(object sender, EventArgs e)
@@ -33,7 +37,7 @@
             {
                 string deviceName = inputName.Text;
                 string deviceId = inputID.Text;
-                _gpsDeviceList.GpsSubmit(deviceName, deviceId);
+                _gpsDeviceList.AddDeviceAsync(deviceName, deviceId,0.0,0.0);
 
                 inputID.Text = string.Empty;
                 inputName.Text = string.Empty;
@@ -76,7 +80,10 @@
             var button = sender as Button;
             var id = button.CommandParameter as string;
             var device = _gpsDeviceList.GpsDev.FirstOrDefault(x => x.Id == id);
-            _gpsDeviceList.GpsDev.Remove(device);
+            if (device  != null)
+            {
+                await _gpsDeviceList.DeleteDeviceAsync(device);
+            }
         }
 
 
