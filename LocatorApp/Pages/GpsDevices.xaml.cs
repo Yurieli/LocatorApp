@@ -91,9 +91,8 @@
         {
             if (inputName != null)
             {
-                inputName.IsEnabled = false;  // Temporarily disable the Entry
-                inputName.IsEnabled = true;   // Re-enable the Entry (forces keyboard close)
-            }
+                inputName.IsEnabled = false;
+                inputName.IsEnabled = true;
 
             if (inputID != null)
             {
