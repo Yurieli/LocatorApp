@@ -4,13 +4,25 @@ using System.Threading.Tasks;
 using Microsoft.Maui.Storage;
 using SQLite;
 using System.Diagnostics;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace LocatorApp.Classes
 {
     public class GpsDeviceList
     {
         private readonly SQLiteAsyncConnection _database;
-        public ObservableCollection<GpsDevice> GpsDev { get; set; }
+        private ObservableCollection<GpsDevice> _gpsDev;
+        public ObservableCollection<GpsDevice> GpsDev
+        {
+            get => _gpsDev;
+            set
+            {
+                _gpsDev = value;
+                OnPropertyChanged();
+            }
+        }
+        
         private readonly DatabaseHelper _dbHelper;
         
         public GpsDeviceList()
@@ -18,8 +30,7 @@ namespace LocatorApp.Classes
             GpsDev = new ObservableCollection<GpsDevice>();
             try
             {
-                string dbPath = Path.Combine(FileSystem.AppDataDirectory, "devices.db3");
-                _database = new SQLiteAsyncConnection(dbPath);
+                _database = new SQLiteAsyncConnection(Path.Combine(FileSystem.AppDataDirectory, "GpsDevices.db3"));
                 _database.CreateTableAsync<GpsDevice>().Wait();
             }
             catch (Exception ex)
@@ -28,6 +39,13 @@ namespace LocatorApp.Classes
             }
 
 
+        }
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public async Task LoadDevicesAsync()
@@ -59,12 +77,30 @@ namespace LocatorApp.Classes
         }
 
 
-        public async Task AddDeviceAsync(string name,string id, double latitude, double longitude)
+        public async Task AddDeviceAsync(string name, string id, double latitude, double longitude)
         {
-            var newDevice = new GpsDevice(name,id , latitude, longitude);
-            await _database.InsertAsync(newDevice);
-            await LoadDevicesAsync(); // Refresh list
+            try
+            {
+                var device = new GpsDevice(name, Guid.NewGuid().ToString(), latitude, longitude);
+                int result = await _database.InsertAsync(device);
+
+                if (result > 0)
+                {
+                    Debug.WriteLine("Device successfully added.");
+                }
+                else
+                {
+                    Debug.WriteLine("Device insertion failed.");
+                }
+
+                await LoadDevicesAsync();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"InsertAsync Error: {ex.Message}");
+            }
         }
+
 
         public async Task DeleteDeviceAsync(GpsDevice device)
         {

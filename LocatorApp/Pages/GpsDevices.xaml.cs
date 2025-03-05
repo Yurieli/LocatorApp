@@ -8,8 +8,8 @@
 
     public partial class GpsDevices : ContentPage
     {
-        
-       public GpsDeviceList _gpsDeviceList { get; set; }
+
+        public GpsDeviceList _gpsDeviceList { get; set; }
 
         public GpsDevices()
         {
@@ -37,7 +37,7 @@
             {
                 string deviceName = inputName.Text;
                 string deviceId = inputID.Text;
-                _gpsDeviceList.AddDeviceAsync(deviceName, deviceId,0.0,0.0);
+                _gpsDeviceList.AddDeviceAsync(deviceName, deviceId, 0.0, 0.0);
 
                 inputID.Text = string.Empty;
                 inputName.Text = string.Empty;
@@ -45,16 +45,16 @@
                 popUpAddDev.Unfocus();
                 popUpAddDev.IsVisible = false;
                 HideKeyboard();
-                
+
             }
-            
+
         }
 
 
         public void CloseAddDev(object sender, EventArgs e)
         {
             inputName.Text = string.Empty;
-            inputID.Text= string.Empty;
+            inputID.Text = string.Empty;
             popUpAddDev.IsVisible = false;
         }
 
@@ -80,7 +80,7 @@
             var button = sender as Button;
             var id = button.CommandParameter as string;
             var device = _gpsDeviceList.GpsDev.FirstOrDefault(x => x.Id == id);
-            if (device  != null)
+            if (device != null)
             {
                 await _gpsDeviceList.DeleteDeviceAsync(device);
             }
@@ -94,10 +94,11 @@
                 inputName.IsEnabled = false;
                 inputName.IsEnabled = true;
 
-            if (inputID != null)
-            {
-                inputID.IsEnabled = false;
-                inputID.IsEnabled = true;
+                if (inputID != null)
+                {
+                    inputID.IsEnabled = false;
+                    inputID.IsEnabled = true;
+                }
             }
         }
     }
