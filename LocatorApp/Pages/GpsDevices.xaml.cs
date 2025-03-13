@@ -4,7 +4,7 @@
     using System.Collections.ObjectModel;
     using Microsoft.Maui.Controls;
     using LocatorApp.Classes;
-    
+    using LocatorApp.Data;
 
     public partial class GpsDevices : ContentPage
     {
@@ -14,10 +14,21 @@
         public GpsDevices()
         {
             InitializeComponent();
+            var input = WriteAndReadFile.ReadFromFile();
 
-            _gpsDeviceList = new GpsDeviceList();
+            if (input == null)
+            {
+                _gpsDeviceList = new GpsDeviceList();
+            }
+            else
+            {
+                _gpsDeviceList = input;
+            }
+           
 
             BindingContext = _gpsDeviceList;
+
+
         }
 
         public async void AddDevSetVisible(object sender, EventArgs e)
@@ -38,6 +49,8 @@
                 string deviceName = inputName.Text;
                 string deviceId = inputID.Text;
                 _gpsDeviceList.GpsSubmit(deviceName, deviceId);
+
+                WriteAndReadFile.WriteToFile(_gpsDeviceList);
 
                 inputID.Text = string.Empty;
                 inputName.Text = string.Empty;

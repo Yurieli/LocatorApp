@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using LocatorApp.Data;
 
 namespace LocatorApp.Classes
 {
@@ -15,9 +16,11 @@ namespace LocatorApp.Classes
             GpsDevice gpsDevice = new GpsDevice(name, id, 48.73350406686496, 21.24905573164951);
 
             GpsDev.Add(gpsDevice);
+
+           
         }
 
-        public GpsDevice getGpsDevice(string id)
+        public GpsDevice? getGpsDevice(string id)
         {
             return GpsDev.FirstOrDefault(gpsDevice => gpsDevice.Id == id);
         }

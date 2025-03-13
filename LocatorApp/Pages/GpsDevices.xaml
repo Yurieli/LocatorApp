@@ -24,7 +24,7 @@
                                 Text="{Binding CombinedText}" />
                             <StackLayout x:Name="deviceInfo" IsVisible="False">
                                 <Button Clicked="Button_Clicked" Text="FIND" />
-                                <Button Clicked="Delete_device" Text="DELETE" />
+
 
                             </StackLayout>
                         </StackLayout>

@@ -70,11 +70,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.40" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
-		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="9.0.10" />
-		<PackageReference Include="Microsoft.Maui.Essentials" Version="9.0.10" />
-		<PackageReference Include="Microsoft.Maui.Maps" Version="9.0.10" />
+		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="9.0.40" />
+		<PackageReference Include="Microsoft.Maui.Essentials" Version="9.0.40" />
+		<PackageReference Include="Microsoft.Maui.Maps" Version="9.0.40" />
 		<PackageReference Include="Xamarin.Essentials" Version="1.6.0" />
 	</ItemGroup>
 
@@ -94,6 +94,12 @@
 	  <MauiXaml Update="Pages\NewPage1.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0-android'">
+	  <PackageReference Include="Xamarin.AndroidX.Browser">
+	    <Version>1.8.0.8</Version>
+	  </PackageReference>
 	</ItemGroup>
 
 </Project>
