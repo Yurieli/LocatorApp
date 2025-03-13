@@ -2,6 +2,7 @@
 using System.Text.Json.Serialization;
 using System.Data.SqlClient;
 using SQLite;
+using System.Runtime.CompilerServices;
 
 namespace LocatorApp.Classes
 {
@@ -32,7 +33,7 @@ namespace LocatorApp.Classes
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

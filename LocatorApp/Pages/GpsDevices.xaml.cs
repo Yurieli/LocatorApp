@@ -4,7 +4,8 @@
     using System.Collections.ObjectModel;
     using Microsoft.Maui.Controls;
     using LocatorApp.Classes;
-
+    using LocatorApp.Data;
+    using System.Text.Json.Serialization;
 
     public partial class GpsDevices : ContentPage
     {
@@ -31,13 +32,14 @@
         }
 
 
-        public void Submit(object sender, EventArgs e)
+        public async void Submit(object sender, EventArgs e)
         {
             if (inputName.Text != null && inputID.Text != null)
             {
                 string deviceName = inputName.Text;
                 string deviceId = inputID.Text;
-                _gpsDeviceList.AddDeviceAsync(deviceName, deviceId, 0.0, 0.0);
+                await _gpsDeviceList.AddDeviceAsync(deviceName, deviceId, 0.0, 0.0);
+                string test = ConvertJsonAndData.DataToJson(_gpsDeviceList);
 
                 inputID.Text = string.Empty;
                 inputName.Text = string.Empty;

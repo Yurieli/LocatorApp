@@ -64,12 +64,7 @@ namespace LocatorApp.Classes
                 Debug.WriteLine($"LoadDevices Error: {ex.Message}");
             }   
         }
-        public void GpsSubmit(string name, string id)
-        {
-            GpsDevice gpsDevice = new GpsDevice(name, id, 48.73350406686496, 21.24905573164951);
-
-            GpsDev.Add(gpsDevice);
-        }
+        
 
         public GpsDevice getGpsDevice(string id)
         {
@@ -81,7 +76,7 @@ namespace LocatorApp.Classes
         {
             try
             {
-                var device = new GpsDevice(name, Guid.NewGuid().ToString(), latitude, longitude);
+                var device = new GpsDevice(name, id, latitude, longitude);
                 int result = await _database.InsertAsync(device);
 
                 if (result > 0)

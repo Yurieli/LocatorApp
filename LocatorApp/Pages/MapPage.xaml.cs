@@ -149,8 +149,8 @@ namespace LocatorApp.Pages
                 Type = PinType.Generic,
                 Location = mauiLocation
             };
-           myMap.Pins.Add(pin);
-
+            myMap.Pins.Add(pin);
+            myMap.MoveToRegion(MapSpan.FromCenterAndRadius(mauiLocation, Distance.FromKilometers(1)));
         }
 
         
