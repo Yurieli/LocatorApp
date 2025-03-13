@@ -37,9 +37,13 @@
             await popUpAddDev.TranslateTo(0, 1, 1500, Easing.SinIn);
         }
 
-        public async void DevInfoSetVisible(object sender, EventArgs e)
+        public void ToggleVisibility(object sender, EventArgs e)
         {
-            
+            if (sender is Button button && button.CommandParameter is GpsDevice device)
+            {
+                device.IsVisible = !device.IsVisible;
+            }
+
         }
 
         public void Submit(object sender, EventArgs e)
@@ -56,6 +60,7 @@
                 inputName.Text = string.Empty;
 
                 popUpAddDev.IsVisible = false;
+                HideKeyboard();
             }
         }
 
@@ -64,13 +69,39 @@
             popUpAddDev.IsVisible = false;
         }
 
-        private async void Button_Clicked(object sender, EventArgs e)
+        private async void Button_Find(object sender, EventArgs e)
         {
             var button = sender as Button;
             var id = button.CommandParameter as string;
             await Navigation.PushAsync(new MapPage(_gpsDeviceList.getGpsDevice(id)));
 
 
+        }
+
+        private async void Button_Delete(object sender, EventArgs e)
+        {
+            var button = sender as Button;
+            var id = button.CommandParameter as string;
+            if (id != null)
+            {
+                _gpsDeviceList.GpsDelete(id);
+                WriteAndReadFile.WriteToFile(_gpsDeviceList);
+            }
+        }
+
+        private void HideKeyboard()
+        {
+            if (inputName != null)
+            {
+                inputName.IsEnabled = false;
+                inputName.IsEnabled = true;
+
+                if (inputID != null)
+                {
+                    inputID.IsEnabled = false;
+                    inputID.IsEnabled = true;
+                }
+            }
         }
     }
 }

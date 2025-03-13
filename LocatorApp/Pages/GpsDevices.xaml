@@ -18,12 +18,19 @@
                     <DataTemplate>
                         <StackLayout Padding="2" Orientation="Horizontal">
                             <Button
-                                Clicked="Button_Clicked"
-                                CommandParameter="{Binding Id}"
+                                Clicked="ToggleVisibility"
+                                CommandParameter="{Binding}"
                                 FontSize="Medium"
                                 Text="{Binding CombinedText}" />
-                            <StackLayout x:Name="deviceInfo" IsVisible="False">
-                                <Button Clicked="Button_Clicked" Text="FIND" />
+                            <StackLayout x:Name="deviceInfo" IsVisible="{Binding IsVisible}">
+                                <Button
+                                    Clicked="Button_Find"
+                                    CommandParameter="{Binding Id}"
+                                    Text="FIND" />
+                                <Button
+                                    Clicked="Button_Delete"
+                                    CommandParameter="{Binding Id}"
+                                    Text="DELETE" />
 
 
                             </StackLayout>

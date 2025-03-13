@@ -20,6 +20,16 @@ namespace LocatorApp.Classes
            
         }
 
+        public void GpsDelete(string id)
+        {
+            GpsDevice gpsDevice = GpsDev.FirstOrDefault(x => x.Id == id);
+            if (gpsDevice != null)
+            {
+                GpsDev.Remove(gpsDevice);
+            }
+
+        }
+
         public GpsDevice? getGpsDevice(string id)
         {
             return GpsDev.FirstOrDefault(gpsDevice => gpsDevice.Id == id);
