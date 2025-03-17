@@ -1,20 +1,54 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="LocatorApp.Pages.MainPage"
-             Title="Home">
+<ContentPage
+    x:Class="LocatorApp.Pages.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Home">
 
-    <ScrollView>
-        <VerticalStackLayout
-            Padding="30,0"
-            Spacing="25">
-            <Button
-                x:Name="CounterBtn"
-                Text="Click me" 
-                SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="OnCounterClicked"
-                HorizontalOptions="Fill" />
+    <VerticalStackLayout Padding="20">
+        <Label
+            FontAttributes="Bold"
+            FontSize="24"
+            HorizontalOptions="Center"
+            Text="Welcome!" />
+
+        <VerticalStackLayout>
+            <Border Padding="10" Margin="15" BackgroundColor="LightGray">
+
+                <VerticalStackLayout>
+                    <Label
+                        Padding="30"
+                        FontAttributes="Bold"
+                        HorizontalOptions="Center"
+                        FontSize="20"
+                        Text="Quick Actions" />
+                    <Button
+                        Margin="20"
+                        Clicked="GoToDevicesPage"
+                        Text="📍 View All Devices" />
+                    <Button
+                        Margin="20"
+                        Clicked="GoToAddDevice"
+                        Text="➕ Add a New Device" />
+                    <Button
+                        Margin="20"
+                        Clicked="GoToMap"
+                        Text="🌍 Open Map" />
+                </VerticalStackLayout>
+
+            </Border>
+            <Button Clicked="FindNearestDevice" Text="🔍 Find My Closest Device" />
         </VerticalStackLayout>
-    </ScrollView>
+
+        <Border BackgroundColor="LightGray">
+            <Label
+                x:Name="NearestDeviceLabel"
+                FontSize="20"
+                HorizontalOptions="Center"
+                Text="Nearest device: Unknown" />
+        </Border>
+
+    </VerticalStackLayout>
+
 
 </ContentPage>

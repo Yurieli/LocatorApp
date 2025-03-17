@@ -39,6 +39,7 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+		<PackageIcon>ic_launcher.png</PackageIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -67,6 +68,13 @@
 	<ItemGroup>
 	  <AndroidResource Include="Resources\Mipmap\appicon.svg" />
 	  <AndroidResource Include="Resources\Mipmap\appiconfg.svg" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="..\..\..\..\Documents\LocatorApp\Resources\AppIcons\android\mipmap-hdpi\ic_launcher.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	</ItemGroup>
 
 	<ItemGroup>
