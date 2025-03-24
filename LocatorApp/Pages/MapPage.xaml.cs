@@ -1,4 +1,4 @@
-namespace LocatorApp.Pages
+﻿namespace LocatorApp.Pages
 {
     using System;
     using System.Threading;
@@ -8,6 +8,9 @@ namespace LocatorApp.Pages
     using Xamarin.Essentials;
     using Microsoft.Maui.Controls;
     using LocatorApp.Classes;
+    using System.Security.AccessControl;
+    using LocatorApp.Data;
+    using Newtonsoft.Json.Linq;
 
     public partial class MapPage : ContentPage
     {
@@ -27,7 +30,7 @@ namespace LocatorApp.Pages
 
                 IsShowingUser = true
             };
-            Content = myMap; // Initialize map as the Content
+            Content = myMap; 
         }
         public MapPage(GpsDevice gpsDevice)
         {
@@ -39,7 +42,60 @@ namespace LocatorApp.Pages
                 
                 IsShowingUser = true
             };
-            Content = myMap; // Initialize map as the Content
+             Content = new Grid
+                        {
+                            Children =
+                {
+                    myMap,
+                    new Button
+                    {
+                        Text = "Refresh",
+                        BackgroundColor = Colors.LightGray,
+                        Padding = 10,
+                        CornerRadius = 20,
+                        HorizontalOptions = LayoutOptions.End,
+                        VerticalOptions = LayoutOptions.End,
+                        Margin = new Thickness(0, 0, 20, 20),
+                        Command = new Command(() => OnRefreshClicked(gpsDevice))
+                    }
+                }
+            }; 
+            ShowDevice(gpsDevice);
+        }
+
+        private async void OnRefreshClicked(GpsDevice gpsDevice)
+        {
+            try
+            {
+                JObject jsonObject;
+
+                var dataString = await DatabaseComunication.getData(gpsDevice.Id);
+
+                if (string.IsNullOrEmpty(dataString) || dataString == "{}")
+                {
+                    Console.WriteLine("Error: No valid data received.");
+                    return;
+                }
+
+                jsonObject = JObject.Parse(dataString);
+
+              
+                if (jsonObject.ContainsKey("latitude") && jsonObject.ContainsKey("longitude"))
+                {
+                    gpsDevice.GpsLatitude = (double)jsonObject["latitude"];
+                    gpsDevice.GpsLongitude = (double)jsonObject["longitude"];
+                }
+                else
+                {
+                    Console.WriteLine("Error: JSON does not contain 'latitude' or 'longitude' fields.");
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in GpsSubmit: {ex.Message}");
+            }
+            myMap.Pins.Clear();
             ShowDevice(gpsDevice);
         }
 
@@ -154,5 +210,6 @@ namespace LocatorApp.Pages
         }
 
         
+
     }
 }

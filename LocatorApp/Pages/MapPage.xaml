@@ -9,11 +9,6 @@
 
 
 
-    <StackLayout>
-        <maps:Map x:Name="map" IsShowingUser="True" />
-
-    </StackLayout>
-
 
 
 </ContentPage>

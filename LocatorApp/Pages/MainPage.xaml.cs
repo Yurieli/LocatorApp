@@ -39,6 +39,7 @@ namespace LocatorApp.Pages
 
         private async void FindNearestDevice(object sender, EventArgs e)
         {
+            LoadDevices();
             var location = await Geolocation.GetLastKnownLocationAsync();
             if (location == null)
             {
@@ -60,11 +61,7 @@ namespace LocatorApp.Pages
             }
         }
 
-        private void RefreshDeviceList(object sender, EventArgs e)
-        {
-            LoadDevices();
-            DisplayAlert("Success", "Device list refreshed!", "OK");
-        }
+        
 
         private double GetDistance(Location userLocation, double devLat, double devLong)
         {

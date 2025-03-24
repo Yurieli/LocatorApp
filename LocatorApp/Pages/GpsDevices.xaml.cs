@@ -5,6 +5,8 @@
     using Microsoft.Maui.Controls;
     using LocatorApp.Classes;
     using LocatorApp.Data;
+    using Newtonsoft.Json.Linq;
+
 
     public partial class GpsDevices : ContentPage
     {
@@ -73,6 +75,37 @@
         {
             var button = sender as Button;
             var id = button.CommandParameter as string;
+            try
+            {
+                JObject jsonObject;
+
+                
+                var dataString = await DatabaseComunication.getData(id);
+
+                if (string.IsNullOrEmpty(dataString) || dataString == "{}")
+                {
+                    Console.WriteLine("Error: No valid data received.");
+                    return;
+                }
+
+              
+                jsonObject = JObject.Parse(dataString);
+
+                if (jsonObject.ContainsKey("latitude") && jsonObject.ContainsKey("longitude"))
+                {
+                    _gpsDeviceList.getGpsDevice(id).GpsLatitude = (double)jsonObject["latitude"];
+                    _gpsDeviceList.getGpsDevice(id).GpsLongitude = (double)jsonObject["longitude"];
+                }
+                else
+                {
+                    Console.WriteLine("Error: JSON does not contain 'latitude' or 'longitude' fields.");
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in GpsSubmit: {ex.Message}");
+            }
             await Navigation.PushAsync(new MapPage(_gpsDeviceList.getGpsDevice(id)));
 
 

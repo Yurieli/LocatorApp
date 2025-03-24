@@ -16,6 +16,10 @@ namespace LocatorApp
                 })
                 .UseMauiMaps();
 
+            builder.ConfigureMauiHandlers(handlers =>
+            {
+                handlers.AddHandler<Microsoft.Maui.Controls.Image, Microsoft.Maui.Handlers.ImageHandler>();
+            });
 
 #if DEBUG
             builder.Logging.AddDebug();

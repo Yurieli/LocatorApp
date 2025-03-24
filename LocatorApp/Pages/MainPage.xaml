@@ -13,14 +13,17 @@
             Text="Welcome!" />
 
         <VerticalStackLayout>
-            <Border Padding="10" Margin="15" BackgroundColor="LightGray">
+            <Border
+                Margin="15"
+                Padding="10"
+                BackgroundColor="LightGray">
 
                 <VerticalStackLayout>
                     <Label
                         Padding="30"
                         FontAttributes="Bold"
-                        HorizontalOptions="Center"
                         FontSize="20"
+                        HorizontalOptions="Center"
                         Text="Quick Actions" />
                     <Button
                         Margin="20"
@@ -37,6 +40,7 @@
                 </VerticalStackLayout>
 
             </Border>
+
             <Button Clicked="FindNearestDevice" Text="🔍 Find My Closest Device" />
         </VerticalStackLayout>
 

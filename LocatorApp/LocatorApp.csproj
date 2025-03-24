@@ -42,13 +42,18 @@
 		<PackageIcon>ic_launcher.png</PackageIcon>
 	</PropertyGroup>
 
+	
 	<ItemGroup>
-		<!-- App Icon -->
 		
-
+		<MauiImage Include="Resources\Splash\splash.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</MauiImage>
+		<!-- App Icon -->
+		<MauiIcon Include="Resources\AppIcon\appicon.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</MauiIcon>
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
-
+		<MauiSplashScreen Include="Resources\Splash\splash.png" />
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
 		<MauiImage Update="Resources\Images\dotnet_bot.png" Resize="True" BaseSize="300,185" />
@@ -61,23 +66,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Resources\Mipmap\appicon.svg" />
-	  <None Remove="Resources\Mipmap\appiconfg.svg" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <AndroidResource Include="Resources\Mipmap\appicon.svg" />
-	  <AndroidResource Include="Resources\Mipmap\appiconfg.svg" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <None Include="..\..\..\..\Documents\LocatorApp\Resources\AppIcons\android\mipmap-hdpi\ic_launcher.png">
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>
 	  </None>
 	</ItemGroup>
+	
 
 	<ItemGroup>
+		<PackageReference Include="JObject" Version="1.0.0" />
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.1" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.40" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
 		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="9.0.40" />
