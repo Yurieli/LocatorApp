@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Text.Json.Serialization;
 
+
 namespace LocatorApp.Classes
 {
     public class GpsDevice : INotifyPropertyChanged
@@ -11,6 +12,8 @@ namespace LocatorApp.Classes
 
         public double GpsLatitude { get; set; } //sirka
         public double GpsLongitude { get; set; } //dlzka;
+
+        public string GpsTimeStamp { get; set; } 
 
         [JsonIgnore]
         public string CombinedText => $"NAME: {Name}    ID: {Id}";

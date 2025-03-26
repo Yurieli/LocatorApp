@@ -42,18 +42,18 @@
                 
                 IsShowingUser = true
             };
-             Content = new Grid
-                        {
-                            Children =
+            Content = new Grid
+            {
+                Children =
                 {
                     myMap,
                     new Button
                     {
-                        Text = "Refresh",
+                        Text = "Refresh" + gpsDevice.GpsTimeStamp,
                         BackgroundColor = Colors.LightGray,
                         Padding = 10,
                         CornerRadius = 20,
-                        HorizontalOptions = LayoutOptions.End,
+                        HorizontalOptions = LayoutOptions.Start,
                         VerticalOptions = LayoutOptions.End,
                         Margin = new Thickness(0, 0, 20, 20),
                         Command = new Command(() => OnRefreshClicked(gpsDevice))
@@ -63,6 +63,7 @@
             ShowDevice(gpsDevice);
         }
 
+        [Obsolete]
         private async void OnRefreshClicked(GpsDevice gpsDevice)
         {
             try
@@ -79,11 +80,12 @@
 
                 jsonObject = JObject.Parse(dataString);
 
-              
+
                 if (jsonObject.ContainsKey("latitude") && jsonObject.ContainsKey("longitude"))
                 {
                     gpsDevice.GpsLatitude = (double)jsonObject["latitude"];
                     gpsDevice.GpsLongitude = (double)jsonObject["longitude"];
+                    gpsDevice.GpsTimeStamp = (string)jsonObject["timeStamp"];
                 }
                 else
                 {
@@ -97,6 +99,18 @@
             }
             myMap.Pins.Clear();
             ShowDevice(gpsDevice);
+
+            Device.BeginInvokeOnMainThread(() =>
+            {
+
+                var refreshButton = (Button)((Grid)Content).Children[1]; // Get the button from the Grid
+                if (DateTime.TryParse(gpsDevice.GpsTimeStamp, out DateTime timestamp))
+                {
+                    refreshButton.Text = "Refresh " + "Last update: " + timestamp.ToString("HH:mm:ss"); // Format time only
+                }
+                
+            });
+
         }
 
         public MapPage(MapSpan mapSpan) : this()
